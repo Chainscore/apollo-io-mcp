@@ -137,5 +137,6 @@ MIT
 ## Contact
 
 Need help integrating this MCP server into your workflow? Reach out at **[prasad@chainscorelabs.com](mailto:prasad@chainscorelabs.com)**.
+We help companies build agentic workflows seemlessly that saves time and money.
 
 Built by [Chainscore](https://github.com/Chainscore).
