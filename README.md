@@ -1,110 +1,141 @@
 # Apollo.io MCP Server
 
-MCP (Model Context Protocol) server that wraps the Apollo.io REST API, enabling Claude Code and other MCP clients to search people/companies, enrich contacts, manage sequences, and perform outreach operations.
+A [Model Context Protocol (MCP)](https://modelcontextprotocol.io) server for the **Apollo.io API** — giving AI coding assistants like **Claude Code**, **Cursor**, and any MCP-compatible client direct access to Apollo.io's sales intelligence platform.
 
-## Setup
+Search leads, enrich contacts with verified emails and phone numbers, manage CRM records, run email sequences, and track outreach — all through natural language via **27 ready-to-use tools**.
 
-1. Install dependencies:
-   ```bash
-   npm install
-   ```
+## Why Use This?
 
-2. Build:
-   ```bash
-   npm run build
-   ```
+- **AI-native prospecting** — Ask your AI assistant to "find CTOs at Series B fintech companies in NYC" and get results instantly
+- **Automated enrichment** — Enrich leads with verified emails and phone numbers without leaving your editor
+- **CRM operations** — Create, update, and search contacts and accounts through conversation
+- **Sequence management** — Add contacts to email sequences and monitor outreach performance
+- **Credit-aware** — Every tool description includes credit cost so your AI avoids unexpected charges
 
-3. Set your Apollo API key:
-   ```bash
-   export APOLLO_API_KEY=your_key_here
-   ```
+## Quick Start
 
-4. Add to your MCP client config (e.g. Claude Code `~/.claude/settings.json`):
-   ```json
-   {
-     "mcpServers": {
-       "apollo-io": {
-         "command": "node",
-         "args": ["/path/to/apollo-io-mcp/dist/index.js"],
-         "env": {
-           "APOLLO_API_KEY": "your_key_here"
-         }
-       }
-     }
-   }
-   ```
+### 1. Clone & Build
+
+```bash
+git clone https://github.com/Chainscore/apollo-io-mcp.git
+cd apollo-io-mcp
+npm install
+npm run build
+```
+
+### 2. Get Your Apollo API Key
+
+Get your API key from [Apollo.io Settings > Integrations > API](https://app.apollo.io/#/settings/integrations/api).
+
+### 3. Add to Your MCP Client
+
+**Claude Code** (`~/.claude/settings.json`):
+```json
+{
+  "mcpServers": {
+    "apollo-io": {
+      "command": "node",
+      "args": ["/path/to/apollo-io-mcp/dist/index.js"],
+      "env": {
+        "APOLLO_API_KEY": "your_key_here"
+      }
+    }
+  }
+}
+```
+
+**Cursor** (`.cursor/mcp.json`):
+```json
+{
+  "mcpServers": {
+    "apollo-io": {
+      "command": "node",
+      "args": ["/path/to/apollo-io-mcp/dist/index.js"],
+      "env": {
+        "APOLLO_API_KEY": "your_key_here"
+      }
+    }
+  }
+}
+```
 
 ## Tools (27)
 
-### People
+### People Search & Enrichment
 | Tool | Description | Cost |
 |------|-------------|------|
-| `search_people` | Search Apollo's database for people by title, company, location, etc. | FREE |
-| `enrich_person` | Get email, phone, and detailed profile for a person | 1 credit |
-| `bulk_enrich_people` | Enrich multiple people in one request (max 10) | 1 credit/person |
+| `search_people` | Search Apollo's 270M+ contact database by title, company, location, seniority | FREE |
+| `enrich_person` | Get verified email, phone number, and full profile for a person | 1 credit |
+| `bulk_enrich_people` | Enrich up to 10 people in a single request | 1 credit/person |
 
-### Organizations
+### Company / Organization Data
 | Tool | Description | Cost |
 |------|-------------|------|
-| `search_organizations` | Search for companies by name, industry, size, revenue | 1 credit/page |
-| `enrich_organization` | Get detailed company info by domain | 1 credit |
-| `get_organization` | Get organization by Apollo ID | FREE |
-| `get_organization_job_postings` | Get job postings for an organization | 1 credit |
+| `search_organizations` | Search companies by name, industry, employee count, revenue | 1 credit/page |
+| `enrich_organization` | Get detailed company info (tech stack, funding, size) by domain | 1 credit |
+| `get_organization` | Get organization details by Apollo ID | FREE |
+| `get_organization_job_postings` | Get current job postings for a company | 1 credit |
 
-### Contacts (CRM)
+### CRM — Contacts
 | Tool | Description | Cost |
 |------|-------------|------|
-| `create_contact` | Create a contact in your CRM (deduplication enforced) | FREE |
+| `create_contact` | Create a contact with automatic deduplication | FREE |
 | `update_contact` | Update an existing contact | FREE |
-| `get_contact` | Get a contact by ID | FREE |
+| `get_contact` | Retrieve a contact by ID | FREE |
 | `search_contacts` | Search your saved contacts | FREE |
-| `bulk_create_contacts` | Create multiple contacts (max 100) | FREE |
-| `bulk_update_contacts` | Update multiple contacts (max 100) | FREE |
+| `bulk_create_contacts` | Create up to 100 contacts at once | FREE |
+| `bulk_update_contacts` | Update up to 100 contacts at once | FREE |
 
-### Accounts (CRM)
+### CRM — Accounts
 | Tool | Description | Cost |
 |------|-------------|------|
 | `create_account` | Create a company record in your CRM | FREE |
 | `update_account` | Update an existing account | FREE |
 | `search_accounts` | Search your saved accounts | FREE |
 
-### Sequences
+### Email Sequences & Outreach
 | Tool | Description | Cost |
 |------|-------------|------|
 | `search_sequences` | Search email sequences/campaigns | FREE |
 | `add_contacts_to_sequence` | Add contacts to an email sequence | FREE |
-| `update_sequence_status` | Remove or stop contacts in a sequence | FREE |
+| `update_sequence_status` | Remove or pause contacts in a sequence | FREE |
+| `search_outreach_emails` | Search sent outreach emails with open/click tracking | FREE |
+| `get_email_activities` | Get opens, clicks, and replies for an email | FREE |
+| `list_email_accounts` | List connected sending email accounts | FREE |
 
-### Emails
+### Custom Fields & Metadata
 | Tool | Description | Cost |
 |------|-------------|------|
-| `search_outreach_emails` | Search sent outreach emails | FREE |
-| `get_email_activities` | Get opens/clicks/replies for an email | FREE |
-| `list_email_accounts` | List connected email accounts (master key required) | FREE |
+| `list_fields` | List all available fields for contacts/accounts | FREE |
+| `create_custom_field` | Create a custom field (text, number, dropdown, etc.) | FREE |
+| `list_custom_fields_deprecated` | List custom fields via legacy endpoint | FREE |
 
-### Fields
+### News & Usage
 | Tool | Description | Cost |
 |------|-------------|------|
-| `list_fields` | List available fields for contacts/accounts | FREE |
-| `create_custom_field` | Create a custom field | FREE |
-| `list_custom_fields_deprecated` | List custom fields (legacy endpoint) | FREE |
-
-### Other
-| Tool | Description | Cost |
-|------|-------------|------|
-| `search_news_articles` | Search news articles about companies | Credits |
-| `get_api_usage_stats` | Get API usage and credit info | FREE |
+| `search_news_articles` | Search recent news about target companies | Credits |
+| `get_api_usage_stats` | Check API credit usage and remaining balance | FREE |
 
 ## Usage Tips
 
-- Start with `get_api_usage_stats` to verify your API key works
-- Use `search_people` (FREE) for prospecting before enriching with `enrich_person` (1 credit)
-- Prefer `search_people` over `search_organizations` to save credits
-- Domains are auto-cleaned — you can pass `https://www.google.com` and it becomes `google.com`
-- Contact creation always deduplicates to prevent duplicates
+- **Verify your setup** — Start with `get_api_usage_stats` (FREE) to confirm your API key works
+- **Save credits** — Use `search_people` (FREE) for prospecting before enriching with `enrich_person` (1 credit)
+- **Prefer people search** — `search_people` is free while `search_organizations` costs 1 credit/page
+- **Auto-cleaned domains** — Pass `https://www.google.com`, `www.google.com`, or `@google.com` — all resolve to `google.com`
+- **Built-in deduplication** — Contact creation enforces dedup so you never accidentally create duplicates
+
+## Requirements
+
+- Node.js 18+
+- Apollo.io API key ([get one here](https://app.apollo.io/#/settings/integrations/api))
+- An MCP-compatible client (Claude Code, Cursor, etc.)
+
+## License
+
+MIT
 
 ## Contact
 
-Need help integrating this MCP server? Reach out to us at [prasad@chainscorelabs.com](mailto:prasad@chainscorelabs.com).
+Need help integrating this MCP server into your workflow? Reach out at **[prasad@chainscorelabs.com](mailto:prasad@chainscorelabs.com)**.
 
 Built by [Chainscore](https://github.com/Chainscore).
