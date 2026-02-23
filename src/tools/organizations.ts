@@ -86,7 +86,7 @@ export async function enrichOrganization(
 export const getOrganizationDef = {
   name: "get_organization" as const,
   description:
-    "Get details for an organization by its Apollo ID. FREE — no credit cost. " +
+    "Get details for an organization by its Apollo ID. FREE -- no credit cost. " +
     "Use this when you already have the organization ID from a previous search.",
   inputSchema: z.object({
     organization_id: z.string().describe("Apollo organization ID"),

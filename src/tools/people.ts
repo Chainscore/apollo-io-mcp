@@ -6,7 +6,7 @@ export const searchPeopleDef = {
   description:
     "Search for people in Apollo's database. This is FREE and does not cost credits. " +
     "Use this as the primary discovery tool. Returns name, title, company, and LinkedIn URL. " +
-    "Does NOT return email/phone — use enrich_person to get contact info (costs 1 credit). " +
+    "Does NOT return email/phone -- use enrich_person to get contact info (costs 1 credit). " +
     "Supports filtering by title, company, location, seniority, and more. Max 10 results per page.",
   inputSchema: z.object({
     q_keywords: z
@@ -55,6 +55,30 @@ export const searchPeopleDef = {
       .array(z.string())
       .optional()
       .describe("Apollo organization IDs to filter by"),
+    q_organization_keyword_tags: z
+      .array(z.string())
+      .optional()
+      .describe("Company keyword tags, e.g. ['blockchain', 'DeFi', 'web3']"),
+    currently_using_any_of_technology_uids: z
+      .array(z.string())
+      .optional()
+      .describe("Technologies the company uses, e.g. ['solidity', 'ethereum']. Use underscores for spaces."),
+    q_organization_job_titles: z
+      .array(z.string())
+      .optional()
+      .describe("Job titles in the company's active postings, e.g. ['Solidity', 'Rust']"),
+    organization_latest_funding_stage_cd: z
+      .string()
+      .optional()
+      .describe("Latest funding stage: 'seed', 'series_a', 'series_b', 'angel', 'pre_seed', etc."),
+    revenue_range: z
+      .object({ min: z.number().optional(), max: z.number().optional() })
+      .optional()
+      .describe("Revenue range in USD, e.g. {min: 1000000, max: 10000000}"),
+    include_similar_titles: z
+      .boolean()
+      .optional()
+      .describe("Include similar titles to person_titles. Default true. Set false for exact match."),
     page: z
       .number()
       .int()
@@ -79,7 +103,7 @@ export async function searchPeople(
     ...input,
     q_organization_domains: input.q_organization_domains?.map(cleanDomain),
   });
-  return client.post("/api/v1/mixed_people/search", body);
+  return client.post("/api/v1/mixed_people/api_search", body);
 }
 
 export const enrichPersonDef = {

@@ -117,7 +117,7 @@ export const searchContactsDef = {
   name: "search_contacts" as const,
   description:
     "Search contacts in your Apollo CRM. FREE. " +
-    "These are contacts you've already saved — not the global Apollo database. " +
+    "These are contacts you've already saved -- not the global Apollo database. " +
     "Use search_people for prospecting new contacts.",
   inputSchema: z.object({
     q_keywords: z.string().optional().describe("Keyword search"),
@@ -141,6 +141,23 @@ export async function searchContacts(
 ) {
   const body = stripUndefined({ ...input });
   return client.post("/api/v1/contacts/search", body);
+}
+
+export const deleteContactDef = {
+  name: "delete_contact" as const,
+  description:
+    "Delete a contact from your Apollo CRM. FREE. " +
+    "This permanently removes the contact. Undocumented but functional.",
+  inputSchema: z.object({
+    contact_id: z.string().describe("Apollo contact ID to delete"),
+  }),
+};
+
+export async function deleteContact(
+  client: ApolloClient,
+  input: z.infer<typeof deleteContactDef.inputSchema>
+) {
+  return client.del(`/api/v1/contacts/${input.contact_id}`);
 }
 
 export const bulkCreateContactsDef = {

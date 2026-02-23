@@ -1,4 +1,5 @@
 const BASE_URL = "https://api.apollo.io";
+const INTERNAL_BASE_URL = "https://app.apollo.io";
 
 export class ApolloClient {
   private apiKey: string;
@@ -11,9 +12,11 @@ export class ApolloClient {
     method: string,
     path: string,
     body?: Record<string, unknown>,
-    queryParams?: Record<string, string>
+    queryParams?: Record<string, string>,
+    useInternalApi = false
   ): Promise<Record<string, unknown>> {
-    let url = `${BASE_URL}${path}`;
+    const base = useInternalApi ? INTERNAL_BASE_URL : BASE_URL;
+    let url = `${base}${path}`;
 
     if (queryParams) {
       const params = new URLSearchParams();
@@ -82,6 +85,35 @@ export class ApolloClient {
     body?: Record<string, unknown>
   ): Promise<Record<string, unknown>> {
     return this.request("PATCH", path, body);
+  }
+
+  async put(
+    path: string,
+    body?: Record<string, unknown>
+  ): Promise<Record<string, unknown>> {
+    return this.request("PUT", path, body);
+  }
+
+  async del(
+    path: string
+  ): Promise<Record<string, unknown>> {
+    return this.request("DELETE", path);
+  }
+
+  /** POST to app.apollo.io (internal/undocumented API) */
+  async internalPost(
+    path: string,
+    body?: Record<string, unknown>
+  ): Promise<Record<string, unknown>> {
+    return this.request("POST", path, body, undefined, true);
+  }
+
+  /** PUT to app.apollo.io (internal/undocumented API) */
+  async internalPut(
+    path: string,
+    body?: Record<string, unknown>
+  ): Promise<Record<string, unknown>> {
+    return this.request("PUT", path, body, undefined, true);
   }
 }
 
